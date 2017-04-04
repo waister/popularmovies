@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="moviesSortKeys">
+        <item>Most popular first</item>
+        <item>Top rated first</item>
+    </string-array>
+
+    <string-array name="moviesSortValues">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+</resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="me.appfolio.popularmovies.DetailsActivity">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:textSize="26sp"
+        android:textColor="@color/headerTextColor"
+        android:background="@color/headerBgColor"
+        android:text="New Text" />
+
+    <View
+        android:id="@+id/image_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/text_title"
+        android:background="@color/dividerColor" />
+
+    <ImageView
+        android:id="@+id/image_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_divider"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:contentDescription="@string/poster_of_movie"
+        android:adjustViewBounds="true" />
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/image_poster"
+        android:layout_toRightOf="@+id/image_poster"
+        android:layout_toEndOf="@+id/image_poster"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textSize="20sp"
+        android:textColor="@color/textColor"
+        android:text="New Text" />
+
+    <TextView
+        android:id="@+id/text_vote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_date"
+        android:layout_toRightOf="@+id/image_poster"
+        android:layout_toEndOf="@+id/image_poster"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"
+        android:text="New Text" />
+
+    <TextView
+        android:id="@+id/text_popularity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_vote"
+        android:layout_toRightOf="@+id/image_poster"
+        android:layout_toEndOf="@+id/image_poster"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"
+        android:text="New Text" />
+
+    <TextView
+        android:id="@+id/text_overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_poster"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"
+        android:text="New Text" />
+</RelativeLayout>
