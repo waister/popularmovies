@@ -16,14 +16,13 @@ import java.net.URL;
  * Created by Ravi Tamada on 01/09/16.
  * www.androidhive.info
  */
-public class HttpHandler {
+class HttpHandler {
 
     private static final String TAG = HttpHandler.class.getSimpleName();
 
-    public HttpHandler() {
-    }
+    HttpHandler() {}
 
-    public String makeServiceCall(String reqUrl) {
+    String makeServiceCall(String reqUrl) {
         String response = null;
         try {
             URL url = new URL(reqUrl);

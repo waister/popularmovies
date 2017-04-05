@@ -56,11 +56,10 @@ class MoviesAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        String poster = "http://image.tmdb.org/t/p/w" +
-                MainActivity.IMAGE_WIDTH + "/" + movie.getPosterPath();
+        holder.imageMovie.setContentDescription(movie.getTitle());
 
         Picasso.with(context)
-                .load(poster)
+                .load("http://image.tmdb.org/t/p/w342/" + movie.getPosterPath())
                 .resize(342, 501)
                 .centerCrop()
                 .into(holder.imageMovie);

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,21 +20,13 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener, AdapterView.OnItemClickListener {
-
-    /* The Movie DB API Key */
-    public final static String THE_MOVIE_DB_KEY = "[YOUR THE MOVIE DB API KEY]";
+        View.OnClickListener, AdapterView.OnItemClickListener, AsyncTaskCompleteListener<List<Movie>> {
 
     private final static String TAG = MainActivity.class.getSimpleName();
-    public final static int IMAGE_WIDTH = 342;
 
     private GridView mGridMovies;
     private ProgressBar mProgressMovies;
@@ -75,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (mMoviesSortBy.isEmpty()) {
             mMoviesSortBy = (getResources().getStringArray(R.array.moviesSortValues))[0];
+            Log.w(TAG, "Preference sort is empty, take first from list:  '" + mMoviesSortBy + "'");
 
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putString("movies_sort", mMoviesSortBy);
@@ -82,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (!mMoviesSortBy.equals(mLastMoviesSortBy)) {
+            Log.w(TAG, "Preference sort change from '" + mLastMoviesSortBy + "' to '" + mMoviesSortBy + "'");
+
             checkMoviesApi();
 
             mLastMoviesSortBy = mMoviesSortBy;
@@ -90,8 +84,10 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setGridColumns() {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int deviceWidth = displayMetrics.widthPixels;
-        int numColumns = deviceWidth / IMAGE_WIDTH;
+        float deviceWidth = Utils.pxToDp(this, displayMetrics.widthPixels);
+
+        int numColumns = (int) deviceWidth / 120;
+        if (numColumns < 2) numColumns = 2;
 
         mGridMovies.setNumColumns(numColumns);
     }
@@ -106,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
             mTextMessage.setVisibility(View.GONE);
 
             if (Utils.isOnline(this)) {
-                new CheckMoviesApiTask().execute();
+                new CheckMoviesApiTask(mMoviesSortBy, this).execute();
             } else {
                 showLoadError(getString(R.string.you_offline));
             }
@@ -145,68 +141,10 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private class CheckMoviesApiTask extends AsyncTask<Void, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected List<Movie> doInBackground(Void... params) {
-            mMoviesList.clear();
-
-            String apiUrl = Uri.parse("http://api.themoviedb.org/3/movie/" + mMoviesSortBy)
-                    .buildUpon()
-                    .appendQueryParameter("api_key", THE_MOVIE_DB_KEY)
-                    .build()
-                    .toString();
-
-            // Making a request to url and getting response
-            String jsonStr = new HttpHandler().makeServiceCall(apiUrl);
-
-            Log.w(TAG, "URL: " + apiUrl);
-            Log.w(TAG, "RESPONSE: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray contacts = jsonObj.getJSONArray("results");
-
-                    // looping through all movies
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject apiMovie = contacts.getJSONObject(i);
-
-                        Movie movie = new Movie();
-
-                        movie.setTitle(apiMovie.getString("title"));
-                        movie.setOriginalTitle(apiMovie.getString("original_title"));
-                        movie.setOverview(apiMovie.getString("overview"));
-                        movie.setPosterPath(apiMovie.getString("poster_path"));
-                        movie.setReleaseDate(apiMovie.getString("release_date"));
-                        movie.setPopularity(apiMovie.getDouble("popularity"));
-                        movie.setVoteAverage(apiMovie.getDouble("vote_average"));
-                        movie.setVoteCount(apiMovie.getInt("vote_count"));
-
-                        // adding contact to contact list
-                        mMoviesList.add(movie);
-                    }
-                } catch (final JSONException e) {
-                    e.printStackTrace();
-                    showLoadError(e.getMessage());
-                }
-            } else {
-                showLoadError(getString(R.string.server_connection_error));
-            }
-
-            return mMoviesList;
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> result) {
-            super.onPostExecute(result);
+    @Override
+    public void onTaskComplete(List<Movie> result) {
+        if (result != null) {
+            mMoviesList = result;
 
             if (result.size() > 0) {
                 MoviesAdapter adapter = new MoviesAdapter(mContext, result);
@@ -215,11 +153,13 @@ public class MainActivity extends AppCompatActivity implements
                 showLoadError(getString(R.string.no_movies_found));
             }
 
-            mProgressMovies.setVisibility(View.GONE);
             mTextMessage.setVisibility(View.GONE);
             mButtonTryAgain.setVisibility(View.GONE);
+        } else {
+            showLoadError(getString(R.string.server_connection_error));
         }
 
+        mProgressMovies.setVisibility(View.GONE);
     }
 
     private void showLoadError(String message) {
@@ -233,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private boolean validTmdbApiKey() {
-        if (THE_MOVIE_DB_KEY.equals("[YOUR THE MOVIE DB API KEY]")) {
+        if (BuildConfig.THE_MOVIE_DB_API_KEY.equals("[YOUR THE MOVIE DB API KEY]")) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setCancelable(false);
             dialog.setTitle(R.string.tmdb_api_title);

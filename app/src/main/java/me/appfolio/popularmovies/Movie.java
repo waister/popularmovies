@@ -3,7 +3,7 @@ package me.appfolio.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Movie implements Parcelable {
+class Movie implements Parcelable {
 
     private String title;
     private String original_title;
@@ -14,10 +14,9 @@ public class Movie implements Parcelable {
     private double vote_average;
     private int vote_count;
 
-    public Movie() {
-    }
+    Movie() {}
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         title = in.readString();
         original_title = in.readString();
         overview = in.readString();
@@ -44,63 +43,63 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
     }
 
-    public String getOriginalTitle() {
+    String getOriginalTitle() {
         return original_title;
     }
 
-    public void setOriginalTitle(String original_title) {
+    void setOriginalTitle(String original_title) {
         this.original_title = original_title;
     }
 
-    public String getOverview() {
+    String getOverview() {
         return overview;
     }
 
-    public void setOverview(String overview) {
+    void setOverview(String overview) {
         this.overview = overview;
     }
 
-    public String getPosterPath() {
+    String getPosterPath() {
         return poster_path;
     }
 
-    public void setPosterPath(String poster_path) {
+    void setPosterPath(String poster_path) {
         this.poster_path = poster_path;
     }
 
-    public String getReleaseDate() {
+    String getReleaseDate() {
         return release_date;
     }
 
-    public void setReleaseDate(String release_date) {
+    void setReleaseDate(String release_date) {
         this.release_date = release_date;
     }
 
-    public double getPopularity() {
+    double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(double popularity) {
+    void setPopularity(double popularity) {
         this.popularity = popularity;
     }
 
-    public double getVoteAverage() {
+    double getVoteAverage() {
         return vote_average;
     }
 
-    public void setVoteAverage(double vote_average) {
+    void setVoteAverage(double vote_average) {
         this.vote_average = vote_average;
     }
 
-    public int getVoteCount() {
+    int getVoteCount() {
         return vote_count;
     }
 
-    public void setVoteCount(int vote_count) {
+    void setVoteCount(int vote_count) {
         this.vote_count = vote_count;
     }
 

@@ -26,8 +26,9 @@ public class DetailsActivity extends AppCompatActivity {
         Movie movie = getIntent().getParcelableExtra(MOVIE);
 
         if (movie != null) {
-            String poster = "http://image.tmdb.org/t/p/w342/" + movie.getPosterPath();
-            Picasso.with(this).load(poster).into((ImageView) findViewById(R.id.image_poster));
+            Picasso.with(this)
+                    .load("http://image.tmdb.org/t/p/w342/" + movie.getPosterPath())
+                    .into((ImageView) findViewById(R.id.image_poster));
 
             String title = movie.getOriginalTitle();
             String popularity = String.format(Locale.getDefault(), "%.2f", movie.getPopularity());

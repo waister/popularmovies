@@ -1,8 +1,10 @@
 package me.appfolio.popularmovies;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,4 +36,8 @@ class Utils {
         return "";
     }
 
+    static float pxToDp(Activity activity, int px) {
+        DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+        return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
 }

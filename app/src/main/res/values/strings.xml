@@ -17,6 +17,6 @@
     <string name="summary_sort_movies">You can sort movies by most popular or by top rated</string>
 
     <string name="tmdb_api_title">TMDB API key missing</string>
-    <string name="tmdb_api_message">You need to define the TMDB API Key on MainActivity.THE_MOVIE_DB_KEY.</string>
+    <string name="tmdb_api_message">You need to define the TMDB API Key on Gradle app level property named THE_MOVIE_DB_API_KEY.</string>
     <string name="tmdb_api_open">Open API docs</string>
 </resources>
